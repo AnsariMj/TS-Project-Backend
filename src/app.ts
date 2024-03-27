@@ -16,6 +16,9 @@ app.get("/about", (req: Request, res: Response) => {
 app.get("/contact", (req: Request, res: Response) => {
     res.send("Welcome to the  Contact Page!");
 });
+app.get("/me", (req: Request, res: Response) => {
+    res.send("Welcome!!");
+});
 
 app.listen(PORT, () => {
     console.log("Listening on port " + PORT);
