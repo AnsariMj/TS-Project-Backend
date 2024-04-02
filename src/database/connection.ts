@@ -12,12 +12,13 @@ const sequelize = new Sequelize({
     models: [__dirname + "/models"]
 });
 
+/* This code snippet is authenticating the connection to the database using Sequelize. */
 sequelize.authenticate()
-    .then(() => { console.log("connected") })
+    .then(() => { console.log("connected to database") })
     .catch((err) => { err.message })
 
 
-sequelize.sync({ force: false })
-    .then(() => { console.log("Synced !!!") })
+sequelize.sync({ force: false })    // make "true" when new model fiels in added in the model
+    .then(() => { console.log("Synced with database !!!") })
 
 export default sequelize

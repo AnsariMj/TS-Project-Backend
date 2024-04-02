@@ -18,13 +18,17 @@ class User extends Model {
         primaryKey: true,
         type: DataType.UUID,
         defaultValue: DataType.UUIDV4
-
     })
     declare id: string;
     @Column({
         type: DataType.STRING,
     })
     declare username: string;
+    @Column({
+        type: DataType.STRING,
+        defaultValue: 'customer'
+    })
+    declare role: string
     @Column({
         type: DataType.STRING,
 
