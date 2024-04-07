@@ -10,10 +10,12 @@ app.use(express.json());
 
 
 
+import adminSeeder from './adminSeeder';
 import userRoute from './routes/userRoute';
 app.use("", userRoute)
 
-
+//Admin Seeder
+adminSeeder()
 app.get("/", (req: Request, res: Response) => {
     res.send("Welcome to server Page!");
 })
