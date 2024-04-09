@@ -11,8 +11,12 @@ app.use(express.json());
 
 
 import adminSeeder from './adminSeeder';
+import productRoute from './routes/productRoute';
 import userRoute from './routes/userRoute';
+
 app.use("", userRoute)
+app.use("/admin/product", productRoute)
+
 
 //Admin Seeder
 adminSeeder()

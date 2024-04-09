@@ -25,9 +25,16 @@ class ProductController {
 
         })
         res.status(200).json({
-            message: " Product created successfully"
+            message: " Product added successfully"
         })
     }
 
+
+    // async getAllProducts(req: Request, res: Response): Promise<void> {
+
+    // }
 }
+
+
+
 export default new ProductController()

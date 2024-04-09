@@ -6,7 +6,7 @@ import {
 } from 'sequelize-typescript';
 
 @Table({
-    tableName: 'Products',
+    tableName: 'products',
     modelName: 'Product',
     timestamps: true,
 })
@@ -19,25 +19,40 @@ class Product extends Model {
     })
     declare id: string;
 
+
+
+
     @Column({
         type: DataType.STRING,
         allowNull: false,
     })
     declare productName: string
 
+
+
+
     @Column({
         type: DataType.TEXT
     })
     declare prodcuDescription: string
 
+
+
+
     @Column({
         type: DataType.INTEGER
     })
     declare productPrice: number
+
+
+
     @Column({
         type: DataType.INTEGER
     })
     declare productTotalStockQty: number
+
+
+
 
     @Column({
         type: DataType.STRING

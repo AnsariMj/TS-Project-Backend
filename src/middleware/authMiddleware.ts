@@ -3,7 +3,6 @@ import jwt from "jsonwebtoken";
 import User from '../database/models/User';
 
 
-/* The `interface AuthRequest extends Request` is extending the existing `Request` interface provided by Express in TypeScript. By extending the `Request` interface, we are adding additional properties to the request object that are specific to our application's authentication needs. */
 interface AuthRequest extends Request {
     user?: {
         username: string,
@@ -14,8 +13,7 @@ interface AuthRequest extends Request {
     }
 }
 
-/* The `enum Role` is defining a TypeScript enum with two members: `Admin` and `customer`. Each member is assigned a string value, where `Admin` is assigned the value `'admin'` and `customer` is assigned the value `'customer'`. This enum is used to represent different roles that a user can have within the application. By using an enum, you can ensure type safety and avoid hardcoding role strings throughout the codebase. */
-enum Role {
+export enum Role {
     Admin = 'admin',
     customer = "customer",
 }
@@ -30,11 +28,10 @@ class AuthMiddleware {
             return
         }
         // verify token if it it is legit or tampered 
-        /* The `jwt.verify` function is used to verify the authenticity of a JSON Web Token (JWT). In this specific code snippet: */
         jwt.verify(token, process.env.SECRET_KEY as string, async (err, decoded: any) => {
             if (err) {
                 res.status(403).json({
-                    message: " token is invalid"
+                    message: "Invalid token"
                 })
             } else {
                 // check if that decoded object id user exist or not

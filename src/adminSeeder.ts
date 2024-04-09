@@ -4,7 +4,7 @@ import User from './database/models/User'
 const adminSeeder = async (): Promise<void> => {
     const [data] = await User.findAll({
         where: {
-            email: "mjansari14@gmail.com",
+            email: "admin@gmail.com",
         }
     })
     if (!data) {
