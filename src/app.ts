@@ -11,11 +11,14 @@ app.use(express.json());
 
 
 import adminSeeder from './adminSeeder';
+import categoryController from './controllers/categoryController';
+import categoryRoute from './routes/categoryRoute';
 import productRoute from './routes/productRoute';
 import userRoute from './routes/userRoute';
 
 app.use("", userRoute)
 app.use("/admin/product", productRoute)
+app.use("/admin/category", categoryRoute)
 
 
 //Admin Seeder
@@ -26,5 +29,6 @@ app.get("/", (req: Request, res: Response) => {
 
 
 app.listen(PORT, () => {
+    categoryController.seedCategory()
     console.log("Listening on port " + PORT);
 })

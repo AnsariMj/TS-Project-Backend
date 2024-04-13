@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import User from '../database/models/User';
 
 
-interface AuthRequest extends Request {
+export interface AuthRequest extends Request {
     user?: {
         username: string,
         email: string,
@@ -23,7 +23,7 @@ class AuthMiddleware {
         const token = req.headers.authorization
         if (!token || token === undefined) {
             res.status(403).json({
-                message: "Invalid token"
+                message: "Token not found"
             })
             return
         }

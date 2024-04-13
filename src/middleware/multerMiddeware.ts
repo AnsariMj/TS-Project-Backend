@@ -4,7 +4,7 @@ import multer from 'multer';
 const storage = multer.diskStorage({
     destination: function (req: Request, file: Express.Multer.File, cb: any) {
 
-        const allowedFileTypes = ['image/jpg', ' image/png', ' image/jpeg']
+        const allowedFileTypes = ['image/jpg', 'image/png', 'image/jpeg', 'image/webp']
         if (!allowedFileTypes.includes(file.mimetype)) {
             cb(new Error(" This file is not allowed"))
             return
