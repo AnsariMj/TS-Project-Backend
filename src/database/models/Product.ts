@@ -34,7 +34,7 @@ class Product extends Model {
     @Column({
         type: DataType.TEXT
     })
-    declare prodcuDescription: string
+    declare productDescription: string
 
 
 
