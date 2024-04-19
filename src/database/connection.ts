@@ -2,6 +2,9 @@ import dotenv from 'dotenv';
 import { Sequelize } from "sequelize-typescript";
 import Cart from './models/Cart';
 import Category from './models/Category';
+import Order from './models/Order';
+import orderDetail from './models/OrderDetail';
+import Payment from './models/Payment';
 import Product from './models/Product';
 import User from './models/User';
 // import Category from './models/Category';
@@ -59,6 +62,22 @@ Cart.belongsTo(Product, { foreignKey: 'productId' })
 
 
 
+//ordersDetails order payment and User Relationship
 
+// Order - orderDetail Relation
+Order.hasMany(orderDetail, { foreignKey: 'orderId' })
+orderDetail.belongsTo(Order, { foreignKey: 'orderId' })
+
+// Product - orderDetail Relation
+Product.hasMany(orderDetail, { foreignKey: "productId" })
+orderDetail.belongsTo(Product, { foreignKey: 'productId' })
+
+// Payment - Order Relation
+Payment.hasOne(Order, { foreignKey: 'paymentId' })
+Order.belongsTo(Payment, { foreignKey: 'paymentId' })
+
+// User - Order Relation
+User.hasMany(Order, { foreignKey: 'userId' })
+Order.belongsTo(User, { foreignKey: 'userId' })
 
 export default sequelize
