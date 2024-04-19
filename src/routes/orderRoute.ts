@@ -7,7 +7,7 @@ const router: Router = express.Router()
 
 router.route('/').post(authMiddleware.isAthenticated, errorHandler(orderController.createOrder))
 router.route('/verify').post(authMiddleware.isAthenticated, errorHandler(orderController.verifyTransaction))
-router.route('/details').post(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrders))
+router.route('/details').get(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrders))
 
 router.route('/details/:id')
     .get(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrderDetails))
