@@ -21,8 +21,14 @@ class Order extends Model {
     @Column({
         type: DataType.STRING,
         allowNull: false,
+        validate: {
+            len: {
+                args: [10, 10],
+                msg: "Phone number must be at least 10 digits"
+            }
+        }
     })
-    declare PhoenNumber: string
+    declare phoneNumber: string
 
 
     @Column({

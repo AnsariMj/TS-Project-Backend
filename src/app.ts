@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 import express, { Application, Request, Response } from 'express';
 import './database/connection';
 const app: Application = express();
-const PORT: number = 3000 || 5001 || 5000;
+const PORT: number = 5000 || 3000 || 5001;
 dotenv.config();
 
 
