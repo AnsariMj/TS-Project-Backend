@@ -26,7 +26,7 @@ class CategoryController {
             const data = await Category.bulkCreate(this.categoryData)
             console.log("Category seeded successfully")
         } else {
-            console.log("Catefories already seeded")
+            console.log("Categories already seeded")
         }
     }
 

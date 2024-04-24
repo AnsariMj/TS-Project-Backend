@@ -9,8 +9,17 @@ router.route('/').post(authMiddleware.isAthenticated, errorHandler(orderControll
 router.route('/verify').post(authMiddleware.isAthenticated, errorHandler(orderController.verifyTransaction))
 router.route('/details').get(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrders))
 
+
 router.route('/details/:id')
-    .get(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrderDetails))
     .patch(authMiddleware.isAthenticated, authMiddleware.restrictTo(Role.customer), errorHandler(orderController.cancellMyOrder))
+    .get(authMiddleware.isAthenticated, errorHandler(orderController.fetchMyOrderDetails))
+
+
+router.route('/admin/:id')
+    .patch(authMiddleware.isAthenticated, authMiddleware.restrictTo(Role.Admin), errorHandler(orderController.changeOrderStatus))
+    .delete(authMiddleware.isAthenticated, authMiddleware.restrictTo(Role.Admin), errorHandler(orderController.deleteOrder))
+
+router.route('/admin/payment/:id')
+    .patch(authMiddleware.isAthenticated, authMiddleware.restrictTo(Role.Admin), errorHandler(orderController.changePaymentStatus))
 
 export default router

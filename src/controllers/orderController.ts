@@ -1,11 +1,14 @@
 import axios from "axios";
 import { Response } from "express";
+import Category from "../database/models/Category";
 import Order from "../database/models/Order";
 import orderDetail from "../database/models/OrderDetail";
 import Payment from "../database/models/Payment";
 import Product from "../database/models/Product";
+import User from "../database/models/User";
 import { AuthRequest } from "../middleware/authMiddleware";
-import { OrderData, OrderStatus, PaymentMethod, TransactionStatus, TransactionVerificationResponse, khaltiResponse } from "../types/orderTypes";
+import { ExtendOrder, OrderData, OrderStatus, PaymentMethod, Paymentstatus, TransactionStatus, TransactionVerificationResponse, khaltiResponse } from "../types/orderTypes";
+
 
 class OrderController {
     //Create a new order
@@ -143,9 +146,26 @@ class OrderController {
             },
             include: [
                 {
-                    model: Product
-                }
-            ]
+                    model: Order,
+                    attributes: ['id', 'phoneNumber', 'shippingAddress', 'totalAmount', 'orderStatus']
+                },
+                {
+                    model: Product,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['id', 'username', 'email']
+                        },
+                        {
+                            model: Category,
+                            attributes: ['id', 'categoryName']
+                        }
+                    ],
+                    attributes: ['id', 'productName', 'productDescription', 'productPrice', 'productTotalStockQty', 'productImageUrl']
+                },
+            ],
+            attributes: ['id', 'quantity']
+
         })
         if (orderDetails.length > 0) {
             res.status(200).json({
@@ -185,6 +205,96 @@ class OrderController {
             message: 'Order Cancelled Successfully'
         })
     }
+
+    //Change Order Status ( By Admin) 
+    async changeOrderStatus(req: AuthRequest, res: Response): Promise<void> {
+        const orderId = req.params.id
+        const orderStatus: OrderStatus = req.body.orderStatus;
+        await Order.update({
+            orderStatus: orderStatus
+        }, {
+            where: {
+                id: orderId
+            }
+        })
+        if (!orderStatus) {
+            res.status(400).json({
+                message: 'Please provide orderStatus'
+            })
+            return
+        }
+        res.status(200).json({
+            message: 'Order status updated successfully'
+        })
+    }
+
+    //Change Payment Status ( By Admin) 
+    async changePaymentStatus(req: AuthRequest, res: Response): Promise<void> {
+        const orderId = req.params.id
+        const paymentStatus: Paymentstatus = req.body.paymentStatus
+
+        //find order of given id and update payment status in payment table
+        const order = await Order.findByPk(orderId)
+
+        // added new column in order table
+        const extendedOrder: ExtendOrder = order as ExtendOrder
+
+        await Payment.update(
+            {
+                paymentStatus: paymentStatus
+            },
+            {
+                where: {
+                    id: extendedOrder.paymentId
+                }
+            }
+        )
+        res.status(200).json({
+            message: `payment status of orderId '${orderId}' updated successfully to '${paymentStatus}'`,
+        })
+    }
+
+    //Delete Order ( By Admin) 
+    async deleteOrder(req: AuthRequest, res: Response): Promise<void> {
+        const orderId = req.params.id
+
+        //find order of given id and update payment status in payment table
+        const order = await Order.findByPk(orderId)
+
+        // added new column in order table
+        const extendedOrder: ExtendOrder = order as ExtendOrder
+
+        if (order) {
+            await orderDetail.destroy({
+                where: {
+                    orderId: orderId
+                }
+            })
+
+            await Payment.destroy({
+                where: {
+                    id: extendedOrder.paymentId
+                }
+            })
+
+            await Order.destroy({
+                where: {
+                    id: orderId
+                }
+            })
+
+
+            res.status(200).json({
+                message: "Order deleted successfully"
+            })
+
+        } else {
+            res.status(404).json({
+                message: "No Order Details found for this order details"
+            })
+        }
+    }
+
 
 }
 export default new OrderController();

@@ -1,3 +1,5 @@
+import Order from "../database/models/Order"
+
 export interface OrderData {
     phoneNumber: string,
     shippingAddress: string,
@@ -19,7 +21,7 @@ export enum PaymentMethod {
     Cod = 'cod',
     khalti = 'khalti',
 }
-enum Paymentstatus {
+export enum Paymentstatus {
     Paid = 'paid',
     Unpaid = 'unpaid',
 }
@@ -56,4 +58,8 @@ export enum OrderStatus {
     OntheWay = "ontheway",
     Delivered = "delivered",
     Prepration = "prepration"
+}
+// to add a new column in Order Table to update paymentId
+export class ExtendOrder extends Order {
+    declare paymentId: string | null
 }

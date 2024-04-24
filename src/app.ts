@@ -22,7 +22,7 @@ app.use("", userRoute)
 app.use("/admin/product", productRoute)
 app.use("/admin/category", categoryRoute)
 app.use('/customer/cart', cartRoute)
-app.use("/customer/order", orderRoute)
+app.use("/order", orderRoute)
 
 
 //Admin Seeder
