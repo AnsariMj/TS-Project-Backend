@@ -26,31 +26,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const dotenv = __importStar(require("dotenv"));
 const express_1 = __importDefault(require("express"));
-require("./database/connection");
-const app = (0, express_1.default)();
-const PORT = 5000 || 3000 || 5001;
-dotenv.config();
-app.use(express_1.default.json());
-const adminSeeder_1 = __importDefault(require("./adminSeeder"));
-const categoryController_1 = __importDefault(require("./controllers/categoryController"));
-const cartRoute_1 = __importDefault(require("./routes/cartRoute"));
-const categoryRoute_1 = __importDefault(require("./routes/categoryRoute"));
-const orderRoute_1 = __importDefault(require("./routes/orderRoute"));
-const productRoute_1 = __importDefault(require("./routes/productRoute"));
-const userRoute_1 = __importDefault(require("./routes/userRoute"));
-app.use("", userRoute_1.default);
-app.use("/admin/product", productRoute_1.default);
-app.use("/admin/category", categoryRoute_1.default);
-app.use('/customer/cart', cartRoute_1.default);
-app.use("/order", orderRoute_1.default);
-//Admin Seeder
-(0, adminSeeder_1.default)();
-app.get("/", (req, res) => {
-    res.send("Welcome to server Page!");
-});
-app.listen(PORT, () => {
-    categoryController_1.default.seedCategory();
-    console.log("Listening on port " + PORT);
-});
+const productController_1 = __importDefault(require("../controllers/productController"));
+const authMiddleware_1 = __importStar(require("../middleware/authMiddleware"));
+const multerMiddeware_1 = require("../middleware/multerMiddeware");
+const upload = (0, multerMiddeware_1.multer)({ storage: multerMiddeware_1.storage });
+const router = express_1.default.Router();
+router.route("/")
+    .post(authMiddleware_1.default.isAthenticated, authMiddleware_1.default.restrictTo(authMiddleware_1.Role.Admin), upload.single('image'), productController_1.default.addProduct)
+    .get(productController_1.default.getAllProducts);
+router.route("/:id").get(productController_1.default.getSingelProduct).delete(authMiddleware_1.default.isAthenticated, authMiddleware_1.default.restrictTo(authMiddleware_1.Role.Admin), productController_1.default.deleteProduct);
+exports.default = router;
