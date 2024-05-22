@@ -17,13 +17,16 @@ import categoryRoute from './routes/categoryRoute';
 import orderRoute from './routes/orderRoute';
 import productRoute from './routes/productRoute';
 import userRoute from './routes/userRoute';
+import cors from 'cors'
 
 app.use("", userRoute)
 app.use("/admin/product", productRoute)
 app.use("/admin/category", categoryRoute)
 app.use('/customer/cart', cartRoute)
 app.use("/order", orderRoute)
-
+app.use(cors({
+    origin: "*",
+}))
 
 //Admin Seeder
 adminSeeder()
